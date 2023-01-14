@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="./style.css">
+  <title>Patronus</title>
+  <script src="./load.js"></script>
+</head>
+
+<body>
+  <!-- upper portion -->
+  <div>
+    <div class="flex-container">
+      <div id="sprite-container" class="center" class="flex-child magenta">
+        <div id="mood-bar">
+          <label for="disk_c">Mood 😊</label>
+          <meter id="disk_c" value="3" min="0" max="10">2 out of 10</meter><br>
+        </div>
+        <div id="energy-bar">
+          <label for="disk_c">Energy ⚡</label>
+          <meter id="disk_c" value="2" min="0" max="10">2 out of 10</meter><br>
+        </div>
+        <div id="kindness-bar">
+          <label for="disk_c">Kindness ❤️</label>
+          <meter id="disk_c" value="5" min="0" max="10">2 out of 10</meter><br>
+        </div>
+        <div id="sprite-image">
+        </div>
+      </div>
+      <div class="flex-child magenta">
+        <div id="chatbox"></div>
+        <!-- insert logic -->
+      </div>
+      <div id="sprite-container" class="center" class="flex-child green">
+        <div id="mood-bar-patronus">
+          <label for="disk_c">Mood 😊</label>
+          <meter id="disk_c" value="2" min="0" max="10">2 out of 10</meter><br>
+        </div>
+        <div id="energy-bar-patronus">
+          <label for="disk_c">Energy ⚡</label>
+          <meter id="disk_c" value="2" min="0" max="10">2 out of 10</meter><br>
+        </div>
+        <div id="kindness-bar-patronus">
+          <label for="disk_c">Kindness ❤️</label>
+          <meter id="disk_c" value="2" min="0" max="10">2 out of 10</meter><br>
+        </div>
+        <div id="sprite-image-patronus">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- lower portion -->
+  <div class="form-style-1">
+    <form action="javascript:void(0);" method = "post" id="signup">
+      <div class="flex-container"> 
+        <div class="flex-child magenta"><label>Ask patronus:</label></div>
+        <div class="flex-child magenta"><input type = "text" name = "nm" id="name"/></div>
+        <div class="flex-child magenta"><button type="submit">></button></div>
+    </div>
+    </form>  
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
