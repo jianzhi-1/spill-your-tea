@@ -20,10 +20,27 @@
 }
 
 .center {
-  margin: auto;
+  
   width: 100px;
-  border: 3px solid #73AD21;
   padding: 10px;
+}
+
+#sprite-container {
+  margin-top: auto;
+  margin-left: 200px;
+}
+
+#sprite-container-patron {
+  margin-top: auto;
+  margin-right: 200px;
+}
+
+#attributedelta {
+  margin-top: 328px;
+}
+
+#patronusattributedelta {
+  margin-top: 328px;
 }
 
 #sprite-image-patronus {
@@ -57,7 +74,6 @@
 
 .flex-child {
   flex: 1;
-  border: 2px solid yellow;
 }  
 
 .flex-child:first-child {
