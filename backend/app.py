@@ -64,20 +64,20 @@ def getMessage():
     return resp
 
 def promptGen(ls, responder):
-    prompt = """Here is a conversation between {} and {}\n""".format("ash", responder)
+    prompt = """Here is a conversation between {} and {}.\n""".format("ash", responder)
     for row in ls:
         prompt += """{}: {}\n""".format(row["sender"], row["content"])
     prompt += """{}:""".format(responder)
     return prompt
 
 def promptGenSerena(ashtopika, ls, sender, responder):
-    prompt = """Here is a conversation between ash and pikachu\n"""
+    prompt = """Here is a conversation between ash and pikachu.\n"""
     for row in ashtopika:
         prompt += """{}: {}\n""".format(row["sender"], row["content"])
     prompt += "\n"
     prompt += "\n"
     prompt += "\n"
-    prompt += "{} then talks to {}\n".format(sender, responder)
+    prompt += "{} then talks to {}.\n".format(sender, responder)
     for row in ls:
         prompt += """{}: {}\n""".format(row["sender"], row["content"])
     prompt += """{}:""".format(responder)
