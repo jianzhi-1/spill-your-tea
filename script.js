@@ -82,7 +82,7 @@ form.addEventListener('submit', (event) => {
         console.log(senderMood, receiverMood, data)
         var obj = document.getElementById('chatbox');
         var str = '<div id="chatbox" class="imessage">'
-        for (var i in data){
+        for (var i = data.length - 1; i >= 0; i--){
             str += '<div class="flex-container">'
             str += '<div class="sendername flex-child">'
             str += data[i].sender
