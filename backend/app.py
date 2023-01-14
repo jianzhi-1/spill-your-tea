@@ -7,7 +7,7 @@ import re
 app = Flask(__name__)
 CORS(app)
 
-openAIEnabled = True
+openAIEnabled = False
 openai.api_key = ""
 openAIengine = "text-davinci-003"
 
@@ -84,11 +84,21 @@ def promptGenSerena(ashtopika, ls, sender, responder):
     app.logger.warning("PromptgenSerena: {}".format(prompt))
     return prompt
 
-def complete(prompt):
+def parser(complete, sender):
+    return complete.split("{}:".format(sender))[0]
+
+def complete(prompt, sender):
     if openAIEnabled:
-        completion = openai.Completion.create(engine=openAIengine, prompt=prompt)
+        completion = openai.Completion.create(engine=openAIengine, prompt=prompt).choices[0].text.rstrip()
         app.logger.warning("in completion - {}".format(completion))
-        return completion.choices[0].text
+        retry = 0
+        endToken = {'.', '?', '!'}
+        curprompt = prompt
+        while retry < 2 and completion[-1] not in endToken:
+            retry += 1
+            curprompt = prompt + completion
+            completion += openai.Completion.create(engine=openAIengine, prompt=curprompt).choices[0].text.rstrip()
+        return parser(completion, sender)
     else:
         return "i'm fine, the nap was good"
 
@@ -219,7 +229,7 @@ def sendResponse():
         curlist = getSomeMessage(data['sender'], data['receiver'])
         prompt = promptGenSerena(ashtopika, curlist, data['sender'], data['receiver'])
     
-    completion = complete(prompt)
+    completion = complete(prompt, data['sender'])
 
     # insert to DB
     curlist.append({
