@@ -12,7 +12,6 @@ openAIEnabled = False
 
 def getAllMessage():
     args = request.args
-    app.logger.info(args)
     conn = sqlite3.connect('backend/db.db')
     cursor = conn.execute("""SELECT ID, NAME, ISPATRONUS, PATRONUS, MOOD, ENERGY, KINDNESS from USER""")
     userMap = dict()
@@ -20,7 +19,7 @@ def getAllMessage():
     for row in cursor:
         userMap[row[0]] = row[1]
         invUserMap[row[1]] = row[0]
-    app.logger.info("invUserMap", invUserMap)
+    
     a = invUserMap[args["sender"]]
     b = invUserMap[args["receiver"]]
     cursor = conn.execute("""SELECT id, senderid, receiverid, time, content from MESSAGE WHERE senderid={} AND receiverid={} OR senderid={} AND receiverid={}""".format(a, b, b, a))
@@ -64,14 +63,10 @@ def getMessage():
     return resp
 
 def promptGen(ls, responder):
-    app.logger.info("beginning initialization")
-
     prompt = """Here is a conversation between {} and {}\n""".format("ash", responder)
-    app.logger.info(ls)
     for row in ls:
         prompt += """{}: {}\n""".format(row["sender"], row["content"])
     prompt += """{}:""".format(responder)
-    app.logger.info("completed prompt: ", prompt)
     return prompt
 
 def complete(prompt):
@@ -87,7 +82,6 @@ def insertMessage(msg, senderid, receiverid):
     maxid = 0
     for row in cursor:
         maxid = row[0]
-    app.logger.info("HERIEJRFSDJFLJSD, ", maxid + 1, senderid, receiverid, msg)
     conn.execute("""INSERT INTO MESSAGE (ID, SENDERID, RECEIVERID, TIME, CONTENT) \
       VALUES ({}, {}, {}, '2023-01-14-16:59:34', "{}")""".format(maxid + 1, senderid, receiverid, msg))
     conn.commit()
@@ -102,10 +96,8 @@ def extractNumber(s):
 
 
 def promptGenStats(ls, person):
-    app.logger.info("beginning initialization")
 
     prompt = """Here is a conversation between {} and {}\n""".format("ash", person)
-    app.logger.info(ls)
     for row in ls:
         prompt += """{}: {}\n""".format(row["sender"], row["content"])
     prompt += """\n"""
@@ -131,16 +123,12 @@ def promptGenStats(ls, person):
         kindnesscompletion = """delta 2"""
     kindnessdelta = extractNumber(kindnesscompletion)
 
-    app.logger.info("completed mood prompt: ", moodprompt)
-
     return mooddelta, energydelta, kindnessdelta
 
 def isPatronus(person):
-    app.logger.info("isPatrous ", person)
     conn = sqlite3.connect('backend/db.db')
     cursor = conn.execute("""SELECT ID, NAME, ISPATRONUS, PATRONUS, MOOD, ENERGY, KINDNESS from USER""")
     for row in cursor:
-        app.logger.info("in row", row)
         if row[1] == person:
             conn.close()
             return int(row[2]) == 1
@@ -203,8 +191,7 @@ def sendResponse():
 
     curlist = getSomeMessage(data['sender'], data['receiver'])
     
-    app.logger.info("curlist ", curlist)
-    prompt = promptGen(curlist, "pikachu")
+    prompt = promptGen(curlist, data['receiver']) # need to do if else here
     completion = complete(prompt)
 
     # insert to DB
@@ -220,9 +207,7 @@ def sendResponse():
     receiverDeltaMood = [0, 0, 0]
     senderDeltaMood = [0, 0, 0]
     # update attribute values
-    app.logger.info("RIGHT BEFORE", senderMood, receiverMood, data['sender'], data['receiver'])
     if not isPatronus(data['sender']):
-        app.logger.info("IN PATRON SENDER")
         deltamood, deltaenergy, deltakindness = promptGenStats(curlist, data['sender'])
         senderDeltaMood = [deltamood, deltaenergy, deltakindness]
         deltamood, deltaenergy, deltakindness = updateStats(data['sender'], deltamood, deltaenergy, deltakindness)
@@ -230,7 +215,6 @@ def sendResponse():
         # update
 
     if not isPatronus(data['receiver']):
-        app.logger.info("IN PATRON RECEIVER")
         deltamood, deltaenergy, deltakindness = promptGenStats(curlist, data['receiver'])
         receiverDeltaMood = [deltamood, deltaenergy, deltakindness]
         deltamood, deltaenergy, deltakindness = updateStats(data['receiver'], deltamood, deltaenergy, deltakindness)

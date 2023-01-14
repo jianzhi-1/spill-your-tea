@@ -2,23 +2,58 @@
 <html>
 <head>
   <link rel="stylesheet" href="./serena-style.css">
-  <title>Patronus</title>
+  <title>Spill Your Tea ☕</title>
   <script src="./serena-load.js"></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
 </head>
 
 <body>
   <!-- upper portion -->
   <div>
     <div class="flex-container">
-      <div id="sprite-container" class="center" class="flex-child magenta">
+      <div id="sprite-container" class="center">
+        <div id="mood-bar">
+          <label for="disk_c">Mood 😊</label>
+          <meter id="disk_c" value="30" min="0" max="100"></meter><br>
+        </div>
+        <div id="energy-bar">
+          <label for="disk_c">Energy ⚡</label>
+          <meter id="disk_c" value="20" min="0" max="100"></meter><br>
+        </div>
+        <div id="kindness-bar">
+          <label for="disk_c">Kindness ❤️</label>
+          <meter id="disk_c" value="50" min="0" max="100"></meter><br>
+        </div>
         <div id="sprite-image-girl">
         </div>
+      </div>
+      <div id="attributedelta" class="center attributeDelta">
+        <div>😊 = 0</div>
+        <div>⚡ = 0</div>
+        <div>❤️ = 0</div>
       </div>
       <div class="flex-child magenta">
         <div id="chatbox"></div>
         <!-- insert logic -->
       </div>
-      <div id="sprite-container" class="center" class="flex-child green">
+      <div id="patronusattributedelta" class="center attributeDelta">
+        <div>😊 = 0</div>
+        <div>⚡ = 0</div>
+        <div>❤️ = 0</div>
+      </div>
+      <div id="sprite-container-patron" class="center">
+        <div id="mood-bar-patronus">
+          <label for="disk_c">Mood 😊</label>
+          <meter id="disk_c" value="20" min="0" max="100"></meter><br>
+        </div>
+        <div id="energy-bar-patronus">
+          <label for="disk_c">Energy ⚡</label>
+          <meter id="disk_c" value="20" min="0" max="100"></meter><br>
+        </div>
+        <div id="kindness-bar-patronus">
+          <label for="disk_c">Kindness ❤️</label>
+          <meter id="disk_c" value="20" min="0" max="100"></meter><br>
+        </div>
         <div id="sprite-image">
         </div>
       </div>
@@ -26,12 +61,11 @@
   </div>
 
   <!-- lower portion -->
-  <div>
+  <div class="form-style-1">
     <form action="javascript:void(0);" method = "post" id="signup">
-      <div class="flex-container"> 
-        <div class="flex-child magenta">Ask patronus:</div>
-        <div class="flex-child magenta"><input type = "text" name = "nm" id="name"/></div>
-        <div class="flex-child magenta"><button type="submit">></button></div>
+      <div class="flex-container" style="margin-left:-130px"> 
+        <div class="flex-child magenta"><input type = "text" name = "nm" id="name" style="width:575px"/></div>
+        <div class="flex-child magenta"><button type="submit" style="width:50px;height:32px">></button></div>
     </div>
     </form>  
   </div>
