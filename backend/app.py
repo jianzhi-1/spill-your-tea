@@ -13,7 +13,7 @@ openAIEnabled = False
 def getAllMessage():
     args = request.args
     app.logger.info(args)
-    conn = sqlite3.connect('db.db')
+    conn = sqlite3.connect('backend/db.db')
     cursor = conn.execute("""SELECT ID, NAME, ISPATRONUS, PATRONUS, MOOD, ENERGY, KINDNESS from USER""")
     userMap = dict()
     invUserMap = dict()
@@ -35,7 +35,7 @@ def getAllMessage():
     return content
 
 def getSomeMessage(sender, receiver):
-    conn = sqlite3.connect('db.db')
+    conn = sqlite3.connect('backend/db.db')
     cursor = conn.execute("SELECT ID,NAME,ISPATRONUS,PATRONUS, MOOD, ENERGY, KINDNESS from USER")
     userMap = dict()
     invUserMap = dict()
@@ -82,7 +82,7 @@ def complete(prompt):
         return "i'm fine, the nap was good"
 
 def insertMessage(msg, senderid, receiverid):
-    conn = sqlite3.connect('db.db')
+    conn = sqlite3.connect('backend/db.db')
     cursor = conn.execute("""SELECT MAX(ID) FROM MESSAGE""")
     maxid = 0
     for row in cursor:
@@ -137,7 +137,7 @@ def promptGenStats(ls, person):
 
 def isPatronus(person):
     app.logger.info("isPatrous ", person)
-    conn = sqlite3.connect('db.db')
+    conn = sqlite3.connect('backend/db.db')
     cursor = conn.execute("""SELECT ID, NAME, ISPATRONUS, PATRONUS, MOOD, ENERGY, KINDNESS from USER""")
     for row in cursor:
         app.logger.info("in row", row)
@@ -148,7 +148,7 @@ def isPatronus(person):
     return False
 
 def updateStats(name, deltamood, deltaenergy, deltakindness):
-    conn = sqlite3.connect('db.db')
+    conn = sqlite3.connect('backend/db.db')
     cursor = conn.execute("""SELECT ID, NAME, ISPATRONUS, PATRONUS, MOOD, ENERGY, KINDNESS from USER""")
     curmood = -1000
     curenergy = -1000
@@ -178,7 +178,7 @@ def updateStats(name, deltamood, deltaenergy, deltakindness):
     return curmood, curenergy, curkindness
 
 def getId(sendername, receivername):
-    conn = sqlite3.connect('db.db')
+    conn = sqlite3.connect('backend/db.db')
     cursor = conn.execute("""SELECT ID, NAME, ISPATRONUS, PATRONUS, MOOD, ENERGY, KINDNESS from USER""")
     userMap = dict()
     invUserMap = dict()
