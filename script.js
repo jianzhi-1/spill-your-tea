@@ -46,29 +46,10 @@ function startAnimationPatronus() {
     }, speed);
   }
 
-  function startAnimationPatronusGM() {
-    var position = widthOfEachSprite; //start position for the image
-    const speed = 100; //in millisecond(ms)
-    const diff = widthOfEachSprite; //difference between two sprites
-  
-    animationInterval = setInterval(() => {
-      spriteSheet = document.getElementById("sprite-image-patronus-GM"); //TODO
-      spriteSheet.style.backgroundPosition = `-${position}px -73px`;
-  
-      if (position < widthOfSpriteSheet) {
-        position = position + diff;
-      } else {
-        //increment the position by the width of each sprite each time
-        position = widthOfEachSprite;
-      }
-      //reset the position to show first sprite after the last one
-    }, speed);
-  }
 
 //Start animation
 startAnimation();
 startAnimationPatronus();
-startAnimationPatronusGM();
 
 const form  = document.getElementById('signup');
 
@@ -94,6 +75,9 @@ form.addEventListener('submit', (event) => {
         console.log(data);
         var senderMood = data["senderMood"]
         var receiverMood = data["receiverMood"]
+        var senderDeltaMood = data["senderDeltaMood"]
+        var receiverDeltaMood = data["receiverDeltaMood"]
+
         data = data["list"]
         console.log(senderMood, receiverMood, data)
         var obj = document.getElementById('chatbox');
@@ -169,5 +153,75 @@ form.addEventListener('submit', (event) => {
             strkindnesspatron += '</div>'
             kindnessbarpatron.outerHTML=strkindnesspatron;
         }
+
+        var attributeDelta = document.getElementById('attributedelta');
+        var strAttributeDelta = '<div id="attributedelta" class="center">'
+
+        if (senderDeltaMood[0] > 0){
+            strAttributeDelta += '<div>😊 + ' + senderDeltaMood[0].toString() + '</div>'
+        } else if (senderDeltaMood[0] < 0){
+            strAttributeDelta += '<div>😊 - ' + (-senderDeltaMood[0]).toString() + '</div>'
+        } else {
+            strAttributeDelta += '<div>😊 = ' + senderDeltaMood[0].toString() + '</div>'
+        }
+
+        if (senderDeltaMood[1] > 0){
+            strAttributeDelta += '<div>⚡ + ' + senderDeltaMood[1].toString() + '</div>'
+        } else if (senderDeltaMood[1] < 0){
+            strAttributeDelta += '<div>⚡ - ' + (-senderDeltaMood[1]).toString() + '</div>'
+        } else {
+            strAttributeDelta += '<div>⚡ = ' + senderDeltaMood[1].toString() + '</div>'
+        }
+
+        if (senderDeltaMood[2] > 0){
+            strAttributeDelta += '<div>❤️ + ' + senderDeltaMood[2].toString() + '</div>'
+        } else if (senderDeltaMood[2] < 0){
+            strAttributeDelta += '<div>❤️ - ' + (-senderDeltaMood[2]).toString() + '</div>'
+        } else {
+            strAttributeDelta += '<div>❤️ = ' + senderDeltaMood[2].toString() + '</div>'
+        }
+        
+        strAttributeDelta += '</div>'
+        attributeDelta.outerHTML = strAttributeDelta;
+
+        var patronusAttributeDelta = document.getElementById('patronusattributedelta');
+        var strPatronusAttributeDelta = '<div id="patronusattributedelta" class="center">'
+
+        if (receiverDeltaMood[0] > 0){
+            strPatronusAttributeDelta += '<div>😊 + ' + receiverDeltaMood[0].toString() + '</div>'
+        } else if (receiverDeltaMood[0] < 0){
+            strPatronusAttributeDelta += '<div>😊 - ' + (-receiverDeltaMood[0]).toString() + '</div>'
+        } else {
+            strPatronusAttributeDelta += '<div>😊 = ' + receiverDeltaMood[0].toString() + '</div>'
+        }
+
+        if (receiverDeltaMood[1] > 0){
+            strPatronusAttributeDelta += '<div>⚡ + ' + receiverDeltaMood[1].toString() + '</div>'
+        } else if (receiverDeltaMood[1] < 0){
+            strPatronusAttributeDelta += '<div>⚡ - ' + (-receiverDeltaMood[1]).toString() + '</div>'
+        } else {
+            strPatronusAttributeDelta += '<div>⚡ = ' + receiverDeltaMood[1].toString() + '</div>'
+        }
+
+        if (receiverDeltaMood[2] > 0){
+            strPatronusAttributeDelta += '<div>❤️ + ' + receiverDeltaMood[2].toString() + '</div>'
+        } else if (receiverDeltaMood[2] < 0){
+            strPatronusAttributeDelta += '<div>❤️ - ' + (-receiverDeltaMood[2]).toString() + '</div>'
+        } else {
+            strPatronusAttributeDelta += '<div>❤️ = ' + receiverDeltaMood[2].toString() + '</div>'
+        }
+        strPatronusAttributeDelta += '</div>'
+        patronusAttributeDelta.outerHTML = strPatronusAttributeDelta;
+
+        attributeDelta = document.getElementById('attributedelta');
+        console.log(attributeDelta)
+        patronusAttributeDelta = document.getElementById('patronusattributedelta');
+        console.log(patronusAttributeDelta)
+        attributeDelta.classList.remove("attributeDelta"); 
+        patronusAttributeDelta.classList.remove("attributeDelta"); 
+        void attributeDelta.offsetWidth;
+        void patronusAttributeDelta.offsetWidth;
+        attributeDelta.classList.add("attributeDelta");
+        patronusAttributeDelta.classList.add("attributeDelta");
       })
 });

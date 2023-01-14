@@ -8,6 +8,7 @@ app = Flask(__name__)
 CORS(app)
 
 openAIEnabled = False
+#openai.api_key =
 
 def getAllMessage():
     args = request.args
@@ -96,7 +97,7 @@ def extractNumber(s):
     x = re.findall("-?\d+", s)
     if len(x) == 0: return 0
     x = int(x[0])
-    if x < -10 or x > 10: return 0
+    if x <= -10 or x >= 10: return 0
     return x
 
 
@@ -216,18 +217,22 @@ def sendResponse():
 
     senderMood = [0, 0, 0]
     receiverMood = [0, 0, 0]
+    receiverDeltaMood = [0, 0, 0]
+    senderDeltaMood = [0, 0, 0]
     # update attribute values
     app.logger.info("RIGHT BEFORE", senderMood, receiverMood, data['sender'], data['receiver'])
     if not isPatronus(data['sender']):
         app.logger.info("IN PATRON SENDER")
         deltamood, deltaenergy, deltakindness = promptGenStats(curlist, data['sender'])
+        senderDeltaMood = [deltamood, deltaenergy, deltakindness]
         deltamood, deltaenergy, deltakindness = updateStats(data['sender'], deltamood, deltaenergy, deltakindness)
         senderMood = [deltamood, deltaenergy, deltakindness]
         # update
 
     if not isPatronus(data['receiver']):
         app.logger.info("IN PATRON RECEIVER")
-        (deltamood, deltaenergy, deltakindness) = promptGenStats(curlist, data['receiver'])
+        deltamood, deltaenergy, deltakindness = promptGenStats(curlist, data['receiver'])
+        receiverDeltaMood = [deltamood, deltaenergy, deltakindness]
         deltamood, deltaenergy, deltakindness = updateStats(data['receiver'], deltamood, deltaenergy, deltakindness)
         receiverMood = [deltamood, deltaenergy, deltakindness]
         # update
@@ -236,7 +241,9 @@ def sendResponse():
     resp = jsonify({
         "list": curlist,
         "senderMood": senderMood,
-        "receiverMood": receiverMood
+        "receiverMood": receiverMood,
+        "senderDeltaMood": senderDeltaMood,
+        "receiverDeltaMood": receiverDeltaMood
     })
     return resp
 

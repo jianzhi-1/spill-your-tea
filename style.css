@@ -5,6 +5,20 @@
     0px 0px;
 }
 
+#attributedelta {
+  margin-left: 20px;
+}
+
+.attributeDelta {
+  animation: hide 1s linear 3s 1 forwards;
+}
+
+@keyframes hide {
+  to {
+      opacity: 0;
+  }
+}
+
 .center {
   margin: auto;
   width: 100px;
