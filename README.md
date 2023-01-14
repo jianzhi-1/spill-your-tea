@@ -81,4 +81,4 @@ Finishing the project under the available budget of $18 (initial grant for using
 - Facilitate the importing of chat messages from Whatsapp/Messenger/Telegram
 - Use ChatGPT to learn human characteristics and consciousness
 - Security measures (censoring confidential information e.g. location, passwords, ...)
-- Actually, just wait for a more powerful ChatGPT model to come out
+- Actually, just wait for a more powerful ChatGPT model to come out 🤷
