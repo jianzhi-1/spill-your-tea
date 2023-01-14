@@ -15,7 +15,7 @@ function startAnimation() {
 
   animationInterval = setInterval(() => {
     spriteSheet = document.getElementById("sprite-image");
-    spriteSheet.style.backgroundPosition = `-${position}px -110px`; //TODO
+    spriteSheet.style.backgroundPosition = `-${position}px -128px`; //TODO
 
     if (position < widthOfSpriteSheet) {
       position = position + diff;
@@ -34,7 +34,26 @@ function startAnimationPatronus() {
   
     animationInterval = setInterval(() => {
       spriteSheet = document.getElementById("sprite-image-patronus");
-      spriteSheet.style.backgroundPosition = `-${position}px -60px`;
+      spriteSheet.style.backgroundPosition = `-${position}px -73px`;
+  
+      if (position < widthOfSpriteSheet) {
+        position = position + diff;
+      } else {
+        //increment the position by the width of each sprite each time
+        position = widthOfEachSprite;
+      }
+      //reset the position to show first sprite after the last one
+    }, speed);
+  }
+
+  function startAnimationPatronusGM() {
+    var position = widthOfEachSprite; //start position for the image
+    const speed = 100; //in millisecond(ms)
+    const diff = widthOfEachSprite; //difference between two sprites
+  
+    animationInterval = setInterval(() => {
+      spriteSheet = document.getElementById("sprite-image-patronus-GM"); //TODO
+      spriteSheet.style.backgroundPosition = `-${position}px -73px`;
   
       if (position < widthOfSpriteSheet) {
         position = position + diff;
@@ -49,6 +68,7 @@ function startAnimationPatronus() {
 //Start animation
 startAnimation();
 startAnimationPatronus();
+startAnimationPatronusGM();
 
 const form  = document.getElementById('signup');
 
