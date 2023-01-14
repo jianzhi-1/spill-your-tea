@@ -84,20 +84,32 @@ form.addEventListener('submit', (event) => {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
         },
-        body: JSON.stringify({"name": name.value })
+        body: JSON.stringify({"name": name.value, "sender":"ash", "receiver":"pikachu" })
     }).then(response => {
         console.log(response)
         return response.json()
     })
     .then(response => response)
     .then((data) => {
+        console.log(data);
         var obj = document.getElementById('chatbox');
-        var str = '<div id="chatbox">'
+        var str = '<div id="chatbox" class="imessage">'
         for (var i in data){
-            str += '<div>'
-            str += data[i][0]
+            str += '<div class="flex-container">'
+            str += '<div class="sendername flex-child">'
+            str += data[i].sender
             str += ':'
-            str += data[i][1]
+            str += '</div>'
+            str += '<div class="contentname flex-child">'
+            
+            if (data[i].sender == "ash"){
+                str += '<p class="from-them">'
+            } else {
+                str += '<p class="from-me">'
+            }
+            str += data[i].content
+            str += '</p>'
+            str += '</div>'
             str += '</div>'
         }
         str += '</div>'

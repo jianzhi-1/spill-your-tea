@@ -1,4 +1,4 @@
-fetch('http://localhost:5000/getMessage')
+fetch('http://localhost:5000/getMessage?sender=ash&receiver=pikachu')
   .then((response) => response.json())
   .then((data) => {
     console.log(data);
@@ -11,7 +11,12 @@ fetch('http://localhost:5000/getMessage')
         str += ':'
         str += '</div>'
         str += '<div class="contentname flex-child">'
-        str += '<p class="from-them">'
+        
+        if (data[i].sender == "ash"){
+            str += '<p class="from-them">'
+        } else {
+            str += '<p class="from-me">'
+        }
         str += data[i].content
         str += '</p>'
         str += '</div>'
