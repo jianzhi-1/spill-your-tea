@@ -92,6 +92,10 @@ form.addEventListener('submit', (event) => {
     .then(response => response)
     .then((data) => {
         console.log(data);
+        var senderMood = data["senderMood"]
+        var receiverMood = data["receiverMood"]
+        data = data["list"]
+        console.log(senderMood, receiverMood, data)
         var obj = document.getElementById('chatbox');
         var str = '<div id="chatbox" class="imessage">'
         for (var i in data){
@@ -114,5 +118,56 @@ form.addEventListener('submit', (event) => {
         }
         str += '</div>'
         obj.outerHTML=str;
+
+        if (senderMood[0] == 0 && senderMood[1] == 0 && senderMood[2] == 0){
+
+        } else {
+            /* changing attributes */
+            var moodbar = document.getElementById('mood-bar');
+            var strmood = '<div id="mood-bar">'
+            strmood += '<label for="disk_c">Mood 😊</label>'
+            strmood += '<meter id="disk_c" value="' + senderMood[0].toString() + '" min="0" max="100"></meter><br>'
+            strmood += '</div>'
+            moodbar.outerHTML=strmood;
+
+            var energybar = document.getElementById('energy-bar');
+            var strenergy = '<div id="energy-bar">'
+            strenergy += '<label for="disk_c">Energy ⚡</label>'
+            strenergy += '<meter id="disk_c" value="' + senderMood[1].toString() + '" min="0" max="100"></meter><br>'
+            strenergy += '</div>'
+            energybar.outerHTML=strenergy;
+
+            var kindnessbar = document.getElementById('kindness-bar');
+            var strkindness = '<div id="kindness-bar">'
+            strkindness += '<label for="disk_c">Kindness ❤️</label>'
+            strkindness += '<meter id="disk_c" value="' + senderMood[2].toString() + '" min="0" max="100"></meter><br>'
+            strkindness += '</div>'
+            kindnessbar.outerHTML=strkindness;
+        }
+
+        if (receiverMood[0] == 0 && receiverMood[1] == 0 && receiverMood[2] == 0){
+
+        } else {
+            var moodbarpatron = document.getElementById('mood-bar-patronus');
+            var strmoodpatron = '<div id="mood-bar-patronus">'
+            strmoodpatron += '<label for="disk_c">Mood 😊</label>'
+            strmoodpatron += '<meter id="disk_c" value="' + receiverMood[0].toString() + '" min="0" max="100"></meter><br>'
+            strmoodpatron += '</div>'
+            moodbarpatron.outerHTML=strmoodpatron;
+    
+            var energybarpatron = document.getElementById('energy-bar-patronus');
+            var strenergypatron = '<div id="energy-bar-patronus">'
+            strenergypatron += '<label for="disk_c">Energy ⚡</label>'
+            strenergypatron += '<meter id="disk_c" value="' + receiverMood[1].toString() + '" min="0" max="100"></meter><br>'
+            strenergypatron += '</div>'
+            energybarpatron.outerHTML=strenergypatron;
+    
+            var kindnessbarpatron = document.getElementById('kindness-bar-patronus');
+            var strkindnesspatron = '<div id="kindness-bar-patronus">'
+            strkindnesspatron += '<label for="disk_c">Kindness ❤️</label>'
+            strkindnesspatron += '<meter id="disk_c" value="' + receiverMood[2].toString() + '" min="0" max="100"></meter><br>'
+            strkindnesspatron += '</div>'
+            kindnessbarpatron.outerHTML=strkindnesspatron;
+        }
       })
 });

@@ -111,36 +111,38 @@ def promptGenStats(ls, person):
     moodprompt = prompt +  """After this conversation, {}'s mood changed by (a number from -10 to 10):""".format(person)
 
     if openAIEnabled:
-        moodcompletion = openai.Completion.create(engine="text-curie-001", prompt=moodprompt)
+        moodcompletion = openai.Completion.create(engine="text-curie-001", prompt=moodprompt).choices[0].text
     else:
         moodcompletion = """It increased by 2"""
-    mooddelta = extractNumber(moodcompletion.choices[0].text)
+    mooddelta = extractNumber(moodcompletion)
     
     energyprompt = prompt +  """After this conversation, {}'s energy changed by (a number from -10 to 10):""".format(person)
     if openAIEnabled:
-        energycompletion = openai.Completion.create(engine="text-curie-001", prompt=energyprompt)
+        energycompletion = openai.Completion.create(engine="text-curie-001", prompt=energyprompt).choices[0].text
     else:
         energycompletion = """-3"""
-    energydelta = extractNumber(energycompletion.choices[0].text)
+    energydelta = extractNumber(energycompletion)
 
     kindnessprompt = prompt + """After this conversation, {}'s kindess changed by (a number from -10 to 10):""".format(person)
     if openAIEnabled:
-        kindnesscompletion = openai.Completion.create(engine="text-curie-001", prompt=kindnessprompt)
+        kindnesscompletion = openai.Completion.create(engine="text-curie-001", prompt=kindnessprompt).choices[0].text
     else:
         kindnesscompletion = """delta 2"""
-    kindnessdelta = extractNumber(kindnesscompletion.choices[0].text)
+    kindnessdelta = extractNumber(kindnesscompletion)
 
     app.logger.info("completed mood prompt: ", moodprompt)
 
     return mooddelta, energydelta, kindnessdelta
 
 def isPatronus(person):
+    app.logger.info("isPatrous ", person)
     conn = sqlite3.connect('db.db')
     cursor = conn.execute("""SELECT ID, NAME, ISPATRONUS, PATRONUS, MOOD, ENERGY, KINDNESS from USER""")
     for row in cursor:
+        app.logger.info("in row", row)
         if row[1] == person:
             conn.close()
-            return row[2] == 1
+            return int(row[2]) == 1
     conn.close()
     return False
 
@@ -169,10 +171,10 @@ def updateStats(name, deltamood, deltaenergy, deltakindness):
     curkindness = min(100, curkindness)
     curkindness = max(0, curkindness)
 
-    cursor = conn.execute("""UPDATE USER SET mood={}, energy={}, kindness={} WHERE name={}""".format(curmood, curenergy, curkindness, name))
+    cursor = conn.execute("""UPDATE USER SET mood={}, energy={}, kindness={} WHERE name='{}'""".format(curmood, curenergy, curkindness, name))
     conn.commit()
     conn.close()
-    return
+    return curmood, curenergy, curkindness
 
 def getId(sendername, receivername):
     conn = sqlite3.connect('db.db')
@@ -212,19 +214,30 @@ def sendResponse():
     })
     insertMessage(completion, receiverid, senderid)
 
+    senderMood = [0, 0, 0]
+    receiverMood = [0, 0, 0]
     # update attribute values
+    app.logger.info("RIGHT BEFORE", senderMood, receiverMood, data['sender'], data['receiver'])
     if not isPatronus(data['sender']):
+        app.logger.info("IN PATRON SENDER")
         deltamood, deltaenergy, deltakindness = promptGenStats(curlist, data['sender'])
-        updateStats(data['sender'], deltamood, deltaenergy, deltakindness)
+        deltamood, deltaenergy, deltakindness = updateStats(data['sender'], deltamood, deltaenergy, deltakindness)
+        senderMood = [deltamood, deltaenergy, deltakindness]
         # update
 
     if not isPatronus(data['receiver']):
+        app.logger.info("IN PATRON RECEIVER")
         (deltamood, deltaenergy, deltakindness) = promptGenStats(curlist, data['receiver'])
-        updateStats(data['receiver'], deltamood, deltaenergy, deltakindness)
+        deltamood, deltaenergy, deltakindness = updateStats(data['receiver'], deltamood, deltaenergy, deltakindness)
+        receiverMood = [deltamood, deltaenergy, deltakindness]
         # update
 
     # return new list for update on the frontend
-    resp = jsonify(curlist)
+    resp = jsonify({
+        "list": curlist,
+        "senderMood": senderMood,
+        "receiverMood": receiverMood
+    })
     return resp
 
 if __name__ == '__main__':
