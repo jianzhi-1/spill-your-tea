@@ -57,7 +57,9 @@ form.addEventListener('submit', (event) => {
     // handle the form data
     console.log("PRESSED SUBMIT");
     const name = form.elements['name'];
-    console.log(name.value);
+    var w = name.value;
+    name.value = '';
+    console.log(w);
     fetch("http://localhost:5000/sendMessage", {
         method: "POST",
         headers: {
@@ -65,7 +67,7 @@ form.addEventListener('submit', (event) => {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
         },
-        body: JSON.stringify({"name": name.value, "sender":"ash", "receiver":"pikachu"})
+        body: JSON.stringify({"name": w, "sender":"ash", "receiver":"pikachu"})
     }).then(response => {
         console.log(response)
         return response.json()

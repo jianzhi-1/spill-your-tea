@@ -8,7 +8,7 @@ app = Flask(__name__)
 CORS(app)
 
 openAIEnabled = False
-#openai.api_key =
+#openai.api_key = ""
 
 def getAllMessage():
     args = request.args
@@ -72,6 +72,7 @@ def promptGen(ls, responder):
 def complete(prompt):
     if openAIEnabled:
         completion = openai.Completion.create(engine="text-curie-001", prompt=prompt)
+        app.logger.warning("in completion - {}".format(completion))
         return completion.choices[0].text
     else:
         return "i'm fine, the nap was good"
@@ -101,24 +102,29 @@ def promptGenStats(ls, person):
     for row in ls:
         prompt += """{}: {}\n""".format(row["sender"], row["content"])
     prompt += """\n"""
-    moodprompt = prompt +  """After this conversation, {}'s mood changed by (a number from -10 to 10):""".format(person)
+    prompt += """\n"""
+    prompt += """\n"""
+    moodprompt = prompt +  """After this conversation, {}'s mood changed by (enter a number from -10 to 10):""".format(person)
 
     if openAIEnabled:
         moodcompletion = openai.Completion.create(engine="text-curie-001", prompt=moodprompt).choices[0].text
+        app.logger.warning("mood completion - {}".format(moodcompletion))
     else:
         moodcompletion = """It increased by 2"""
     mooddelta = extractNumber(moodcompletion)
     
-    energyprompt = prompt +  """After this conversation, {}'s energy changed by (a number from -10 to 10):""".format(person)
+    energyprompt = prompt +  """After this conversation, {}'s energy changed by (enter a number from -10 to 10):""".format(person)
     if openAIEnabled:
         energycompletion = openai.Completion.create(engine="text-curie-001", prompt=energyprompt).choices[0].text
+        app.logger.warning("energy completion - {}".format(energycompletion))
     else:
         energycompletion = """-3"""
     energydelta = extractNumber(energycompletion)
 
-    kindnessprompt = prompt + """After this conversation, {}'s kindess changed by (a number from -10 to 10):""".format(person)
+    kindnessprompt = prompt + """After this conversation, {}'s kindess changed by (enter a number from -10 to 10):""".format(person)
     if openAIEnabled:
         kindnesscompletion = openai.Completion.create(engine="text-curie-001", prompt=kindnessprompt).choices[0].text
+        app.logger.warning("kindness completion - {}".format(kindnesscompletion))
     else:
         kindnesscompletion = """delta 2"""
     kindnessdelta = extractNumber(kindnesscompletion)
