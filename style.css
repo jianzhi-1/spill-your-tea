@@ -1,0 +1,33 @@
+#sprite-image {
+  height: 100px;
+  width: 100px;
+  background: url("https://i.pinimg.com/originals/02/89/61/02896153b5e88516af6cb8e444842317.png")
+    0px 0px;
+}
+
+.center {
+  margin: auto;
+  width: 100px;
+  border: 3px solid #73AD21;
+  padding: 10px;
+}
+
+#sprite-image-patronus {
+  height: 100px;
+  width: 100px;
+  background: url("https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/10dc439f-7074-4f5d-a675-e6e5c62593b3/darlp9n-dfb75418-f06c-4a5c-9e62-74e1e6c94b6e.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzEwZGM0MzlmLTcwNzQtNGY1ZC1hNjc1LWU2ZTVjNjI1OTNiM1wvZGFybHA5bi1kZmI3NTQxOC1mMDZjLTRhNWMtOWU2Mi03NGUxZTZjOTRiNmUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.LW4-aGM8OEBXVckl8ggarAdiDPZ5_1q_sc6OCZHH9Rw")
+    0px 0px;
+}
+
+.flex-container {
+  display: flex;
+}
+
+.flex-child {
+  flex: 1;
+  border: 2px solid yellow;
+}  
+
+.flex-child:first-child {
+  margin-right: 20px;
+} 
