@@ -1,8 +1,8 @@
 var animationInterval;
 var spriteSheet = document.getElementById("sprite-image");
 console.log(spriteSheet);
-var widthOfSpriteSheet = 1000;
-var widthOfEachSprite = 200;
+var widthOfSpriteSheet = 256; //TODO
+var widthOfEachSprite = 64; //TODO
 
 function stopAnimation() {
   clearInterval(animationInterval);
@@ -10,12 +10,12 @@ function stopAnimation() {
 
 function startAnimation() {
   var position = widthOfEachSprite; //start position for the image
-  const speed = 100; //in millisecond(ms)
+  const speed = 100; //in millisecond(ms) //TODO
   const diff = widthOfEachSprite; //difference between two sprites
 
   animationInterval = setInterval(() => {
     spriteSheet = document.getElementById("sprite-image");
-    spriteSheet.style.backgroundPosition = `-${position}px 0px`;
+    spriteSheet.style.backgroundPosition = `-${position}px -110px`; //TODO
 
     if (position < widthOfSpriteSheet) {
       position = position + diff;
@@ -34,7 +34,7 @@ function startAnimationPatronus() {
   
     animationInterval = setInterval(() => {
       spriteSheet = document.getElementById("sprite-image-patronus");
-      spriteSheet.style.backgroundPosition = `-${position}px 0px`;
+      spriteSheet.style.backgroundPosition = `-${position}px -60px`;
   
       if (position < widthOfSpriteSheet) {
         position = position + diff;
