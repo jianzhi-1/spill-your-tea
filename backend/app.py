@@ -7,8 +7,9 @@ import re
 app = Flask(__name__)
 CORS(app)
 
-openAIEnabled = False
-#openai.api_key = ""
+openAIEnabled = True
+openai.api_key = ""
+openAIengine = "text-davinci-003"
 
 def getAllMessage():
     args = request.args
@@ -69,9 +70,23 @@ def promptGen(ls, responder):
     prompt += """{}:""".format(responder)
     return prompt
 
+def promptGenSerena(ashtopika, ls, sender, responder):
+    prompt = """Here is a conversation between ash and pikachu\n"""
+    for row in ashtopika:
+        prompt += """{}: {}\n""".format(row["sender"], row["content"])
+    prompt += "\n"
+    prompt += "\n"
+    prompt += "\n"
+    prompt += "{} then talks to {}\n".format(sender, responder)
+    for row in ls:
+        prompt += """{}: {}\n""".format(row["sender"], row["content"])
+    prompt += """{}:""".format(responder)
+    app.logger.warning("PromptgenSerena: {}".format(prompt))
+    return prompt
+
 def complete(prompt):
     if openAIEnabled:
-        completion = openai.Completion.create(engine="text-curie-001", prompt=prompt)
+        completion = openai.Completion.create(engine=openAIengine, prompt=prompt)
         app.logger.warning("in completion - {}".format(completion))
         return completion.choices[0].text
     else:
@@ -107,7 +122,7 @@ def promptGenStats(ls, person):
     moodprompt = prompt +  """After this conversation, {}'s mood changed by (enter a number from -10 to 10):""".format(person)
 
     if openAIEnabled:
-        moodcompletion = openai.Completion.create(engine="text-curie-001", prompt=moodprompt).choices[0].text
+        moodcompletion = openai.Completion.create(engine=openAIengine, prompt=moodprompt).choices[0].text
         app.logger.warning("mood completion - {}".format(moodcompletion))
     else:
         moodcompletion = """It increased by 2"""
@@ -115,7 +130,7 @@ def promptGenStats(ls, person):
     
     energyprompt = prompt +  """After this conversation, {}'s energy changed by (enter a number from -10 to 10):""".format(person)
     if openAIEnabled:
-        energycompletion = openai.Completion.create(engine="text-curie-001", prompt=energyprompt).choices[0].text
+        energycompletion = openai.Completion.create(engine=openAIengine, prompt=energyprompt).choices[0].text
         app.logger.warning("energy completion - {}".format(energycompletion))
     else:
         energycompletion = """-3"""
@@ -123,7 +138,7 @@ def promptGenStats(ls, person):
 
     kindnessprompt = prompt + """After this conversation, {}'s kindess changed by (enter a number from -10 to 10):""".format(person)
     if openAIEnabled:
-        kindnesscompletion = openai.Completion.create(engine="text-curie-001", prompt=kindnessprompt).choices[0].text
+        kindnesscompletion = openai.Completion.create(engine=openAIengine, prompt=kindnessprompt).choices[0].text
         app.logger.warning("kindness completion - {}".format(kindnesscompletion))
     else:
         kindnesscompletion = """delta 2"""
@@ -195,9 +210,15 @@ def sendResponse():
     senderid, receiverid = getId(data['sender'], data['receiver'])
     insertMessage(data['name'], senderid, receiverid)
 
-    curlist = getSomeMessage(data['sender'], data['receiver'])
+    curlist = None
+    if data['sender'] == "ash":
+        curlist = getSomeMessage(data['sender'], data['receiver'])
+        prompt = promptGen(curlist, data['receiver']) # need to do if else here
+    else:
+        ashtopika = getSomeMessage("ash", "pikachu")
+        curlist = getSomeMessage(data['sender'], data['receiver'])
+        prompt = promptGenSerena(ashtopika, curlist, data['sender'], data['receiver'])
     
-    prompt = promptGen(curlist, data['receiver']) # need to do if else here
     completion = complete(prompt)
 
     # insert to DB

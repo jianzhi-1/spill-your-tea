@@ -12,7 +12,7 @@ fetch('http://localhost:5000/getMessage?sender=serena&receiver=ash')
         str += '</div>'
         str += '<div class="contentname flex-child">'
         
-        if (data[i].sender == "ash"){
+        if (data[i].sender == "serena"){
             str += '<p class="from-them">'
         } else {
             str += '<p class="from-me">'
